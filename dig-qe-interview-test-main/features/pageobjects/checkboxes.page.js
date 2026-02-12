@@ -1,15 +1,21 @@
-class CheckboxesPage {
-  get elements() {
-    return {
-      header: () => $("h3"),
-      checkbox: (num) => $(`input:nth-child(${num})`),
-    };
-  }
+import Page from './page.js'
 
-  async select(num) {
-    const checkbox = await this.elements.checkbox(num);
-    await checkbox.click();
-  }
+class CheckboxesPage extends Page {
+    get checkboxes () {
+        return $$('#checkboxes input')
+    }
+
+    async check(index) {
+        const box = this.checkboxes[index]
+        await box.waitForExist()
+        if (!await box.isSelected()) {
+            await box.click()
+        }
+    }
+
+    open () {
+        return super.open('checkboxes')
+    }
 }
 
-export default new CheckboxesPage();
+export default new CheckboxesPage()

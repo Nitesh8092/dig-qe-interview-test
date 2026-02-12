@@ -1,21 +1,16 @@
-class DropdownPage {
-  get elements() {
-    return {
-      header: () => $("h3"),
-      dropdown: () => $("select#dropdown"),
-      selectedOption: () => $('option[selected="selected"]'),
-    };
-  }
+import Page from './page.js'
 
-  async select(option) {
-    const dropdown = await this.elements.dropdown();
-    await dropdown.selectByVisibleText(option);
-  }
+class DropdownPage extends Page {
+    get dropdown () { return $('#dropdown') }
 
-  async selectedOptionText() {
-    const selectedOption = await this.elements.selectedOption();
-    return await selectedOption.getText();
-  }
+    async select(option) {
+        await this.dropdown.waitForDisplayed()
+        await this.dropdown.selectByVisibleText(option)
+    }
+
+    open () {
+        return super.open('dropdown')
+    }
 }
 
-export default new DropdownPage();
+export default new DropdownPage()

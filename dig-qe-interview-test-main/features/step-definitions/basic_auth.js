@@ -1,16 +1,10 @@
-import { Given, When, Then } from "@wdio/cucumber-framework";
-import { expect } from "@wdio/globals";
+import { Given, Then } from '@wdio/cucumber-framework'
 
-import BasicAuthPage from "../pageobjects/basic_auth.page.js";
+Given('I authenticate with username {string} and password {string}', async (user, pass) => {
+    await browser.url(`https://${user}:${pass}@the-internet.herokuapp.com/basic_auth`)
+})
 
-When(
-  /^I use basic auth to login with (\w+) and (.+)$/,
-  async (username, password) => {
-    await BasicAuthPage.login(username, password);
-  }
-);
-
-Then(/^I should see a paragraph saying (.+)$/, async (message) => {
-  await expect(BasicAuthPage.message).toBeExisting();
-  await expect(BasicAuthPage.message).toHaveTextContaining(message);
-});
+Then('I should be logged in successfully', async () => {
+    const text = await $('p').getText()
+    expect(text).toContain('Congratulations')
+})

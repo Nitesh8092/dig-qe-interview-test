@@ -1,14 +1,16 @@
-class DropdownPage {
-  get elements() {
-    return {
-      header: () => $("h3"),
-      input: () => $("/html/body/div[2]/div/div/div/div/input"),
-    };
-  }
+import Page from './page.js'
 
-  async set(value) {
-    await (await this.elements.input()).setValue(value);
-  }
+class InputsPage extends Page {
+    get input () { return $('input[type="number"]') }
+
+    async typeNumber(value) {
+        await this.input.waitForDisplayed()
+        await this.input.setValue(value)
+    }
+
+    open () {
+        return super.open('inputs')
+    }
 }
 
-export default new DropdownPage();
+export default new InputsPage()
